@@ -16,6 +16,7 @@ export function useCheckins() {
     const { data, error } = await supabase
       .from('checkins')
       .select('*')
+      .gte('evento', new Date().toISOString())   // só eventos ainda não ocorridos
       .order('created_at', { ascending: true })
     if (error) {
       console.error('Erro ao carregar checkins:', error)
@@ -26,6 +27,10 @@ export function useCheckins() {
 
   useEffect(() => {
     carregar()
+
+    // recarrega a cada minuto para limpar grupos cujo evento já passou
+    const tickId = setInterval(carregar, 60_000)
+
     const channel = supabase
       .channel('checkins-realtime')
       .on(
@@ -36,6 +41,7 @@ export function useCheckins() {
       .subscribe()
 
     return () => {
+      clearInterval(tickId)
       supabase.removeChannel(channel)
     }
   }, [carregar])
