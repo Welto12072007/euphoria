@@ -1,0 +1,181 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(#0b0b0b, #1a0000);
+  color: #eee;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #ff2e2e;
+  text-shadow: 0 0 10px #ff0000;
+}
+
+.info,
+.status,
+.contador {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.status span {
+  font-weight: bold;
+}
+
+.form {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+input,
+select {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #1c1c1c;
+  color: white;
+}
+
+button {
+  padding: 10px 20px;
+  background: #b30000;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #ff0000;
+}
+
+button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.ranking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.bc-card {
+  background: #141414;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.bc-card h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.bc-full {
+  border: 2px solid red;
+  background: #220000;
+}
+
+.ilusion {
+  border: 1px solid gold;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.ilusion h3 {
+  color: gold;
+}
+
+.vipilusion {
+  border: 1px solid #cc66ff;
+  box-shadow: 0 0 15px rgba(204, 102, 255, 0.4);
+}
+
+.vipilusion h3 {
+  color: #cc66ff;
+}
+
+.modo-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0 10px;
+  flex-wrap: wrap;
+}
+
+.modo-tab {
+  background: #1c1c1c;
+  color: #ccc;
+  border: 1px solid #333;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modo-tab:hover {
+  background: #2a0000;
+  color: white;
+}
+
+.modo-tab.ativo {
+  background: #b30000;
+  border-color: #ff2e2e;
+  color: white;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.titulo-titulares {
+  color: #00ff9c;
+  font-weight: bold;
+}
+
+.titulo-reservas {
+  color: #ffd000;
+  font-weight: bold;
+}
+
+#rodape {
+  text-align: center;
+  padding: 8px;
+  font-size: 0.9rem;
+  color: #ccc;
+  background-color: #111;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.instrucoes {
+  margin: 40px auto 60px;
+  padding: 20px;
+  background: #1a1a1a;
+  border-radius: 10px;
+  max-width: 500px;
+  text-align: center;
+}
+
+.instrucoes ul {
+  text-align: left;
+  display: inline-block;
+}

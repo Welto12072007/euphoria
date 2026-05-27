@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/config.ts","./src/main.tsx","./src/supabase.ts","./src/vite-env.d.ts","./src/components/CheckinForm.tsx","./src/components/ModoTabs.tsx","./src/components/Ranking.tsx","./src/components/StatusBar.tsx","./src/hooks/useCheckins.ts","./src/hooks/useHorarioBrasilia.ts","./src/lib/eventos.ts"],"version":"5.9.3"}
