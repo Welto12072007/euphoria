@@ -1,25 +1,41 @@
--- =========================================================================
--- Euphoria Blood Castle / Ilusion Temple — schema Supabase
--- Rodar no SQL Editor do seu projeto Supabase (uma única vez).
--- =========================================================================
+-- ============================================================
+-- Euphoria BC / Ilusion Temple — Supabase Schema
+-- Rode este arquivo inteiro no SQL Editor do Supabase
+-- ============================================================
 
--- 1) Tabela de check-ins ---------------------------------------------------
+-- Tabela de check-ins
 create table if not exists public.checkins (
-  id          bigserial primary key,
-  player      text        not null,
-  canal       text        not null,
-  evento      timestamptz not null,
-  created_at  timestamptz not null default now()
+  id         bigserial primary key,
+  player     text not null,
+  canal      text not null,
+  evento     timestamptz not null,
+  created_at timestamptz default now()
 );
 
-create index if not exists checkins_evento_canal_idx
-  on public.checkins (evento, canal, created_at);
-
--- Garante 1 inscrição por (jogador, canal, evento)
-create unique index if not exists checkins_unico_idx
+-- Índice único: 1 player por canal/evento
+create unique index if not exists checkins_unique_player
   on public.checkins (lower(player), canal, evento);
 
--- 2) RPC fazer_checkin -----------------------------------------------------
+-- RLS
+alter table public.checkins enable row level security;
+
+drop policy if exists "leitura publica" on public.checkins;
+create policy "leitura publica"
+  on public.checkins for select
+  using (true);
+
+drop policy if exists "escrita via rpc" on public.checkins;
+create policy "escrita via rpc"
+  on public.checkins for insert
+  with check (false);   -- somente via SECURITY DEFINER
+
+-- Realtime
+alter publication supabase_realtime add table public.checkins;
+
+-- ============================================================
+-- RPC: fazer_checkin
+-- BC = 10 vagas | Ilusion/VipIlusion = 5 vagas
+-- ============================================================
 create or replace function public.fazer_checkin(
   p_player text,
   p_canal  text,
@@ -33,7 +49,9 @@ declare
     'bc1','bc2','bc3','bc4','bc5','bc6','bc7',
     'ilusion','vipilusion'
   ];
-  v_total int;
+  v_canais_ilusion text[] := array['ilusion','vipilusion'];
+  v_limite int;
+  v_total  int;
 begin
   if p_player is null or length(trim(p_player)) = 0 then
     return jsonb_build_object('ok', false, 'message', 'Nome inválido');
@@ -43,13 +61,22 @@ begin
     return jsonb_build_object('ok', false, 'message', 'Canal inválido');
   end if;
 
-  -- limite de 10 por canal/evento
+  -- Ilusion = 5 vagas, BC = 10 vagas
+  if p_canal = any(v_canais_ilusion) then
+    v_limite := 5;
+  else
+    v_limite := 10;
+  end if;
+
   select count(*) into v_total
   from public.checkins
   where canal = p_canal and evento = p_evento;
 
-  if v_total >= 10 then
-    return jsonb_build_object('ok', false, 'message', upper(p_canal) || ' já está cheio (10/10)');
+  if v_total >= v_limite then
+    return jsonb_build_object(
+      'ok', false,
+      'message', upper(p_canal) || ' já está cheio (' || v_limite || '/' || v_limite || ')'
+    );
   end if;
 
   begin
@@ -65,25 +92,3 @@ begin
   );
 end;
 $$;
-
-revoke all on function public.fazer_checkin(text,text,timestamptz) from public;
-grant execute on function public.fazer_checkin(text,text,timestamptz)
-  to anon, authenticated;
-
--- 3) RLS — leitura pública, escrita só via RPC -----------------------------
-alter table public.checkins enable row level security;
-
-drop policy if exists "checkins_read_all" on public.checkins;
-create policy "checkins_read_all"
-  on public.checkins for select
-  using (true);
-
--- (sem policy de INSERT/UPDATE/DELETE → bloqueado direto;
---  só a RPC SECURITY DEFINER consegue gravar)
-
--- 4) Realtime --------------------------------------------------------------
-alter publication supabase_realtime add table public.checkins;
-
--- 5) Limpeza opcional: apagar checkins antigos -----------------------------
--- (rode periodicamente via cron, se quiser)
--- delete from public.checkins where evento < now() - interval '1 day';

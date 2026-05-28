@@ -34,6 +34,8 @@ export const MODOS = {
     horarios: HORARIOS_BC,
     titulo: '🩸 Blood Castle Check-in',
     siglaProximo: 'BC',
+    maxJogadores: 10,  // 5 Vip + 5 Principal
+    maxTitulares: 5,
   },
   ilusion: {
     label: 'Ilusion Temple',
@@ -41,6 +43,8 @@ export const MODOS = {
     horarios: HORARIOS_ILUSION,
     titulo: '✨ Ilusion Temple Check-in',
     siglaProximo: 'Ilusion',
+    maxJogadores: 5,   // apenas 1 grupo
+    maxTitulares: 5,
   },
 } as const
 
