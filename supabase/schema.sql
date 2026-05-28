@@ -47,9 +47,8 @@ as $$
 declare
   v_canais_validos text[] := array[
     'bc1','bc2','bc3','bc4','bc5','bc6','bc7',
-    'ilusion','vipilusion'
+    'ilusion'
   ];
-  v_canais_ilusion text[] := array['ilusion','vipilusion'];
   v_limite int;
   v_total  int;
 begin
@@ -61,12 +60,7 @@ begin
     return jsonb_build_object('ok', false, 'message', 'Canal inválido');
   end if;
 
-  -- Ilusion = 5 vagas, BC = 10 vagas
-  if p_canal = any(v_canais_ilusion) then
-    v_limite := 5;
-  else
-    v_limite := 10;
-  end if;
+  v_limite := 10;  -- 10 vagas em todos os canais (5 Vip + 5 Principal)
 
   select count(*) into v_total
   from public.checkins

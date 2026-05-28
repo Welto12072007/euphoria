@@ -43,7 +43,7 @@ export const MODOS = {
     horarios: HORARIOS_ILUSION,
     titulo: '✨ Ilusion Temple Check-in',
     siglaProximo: 'Ilusion',
-    maxJogadores: 5,
+    maxJogadores: 10,  // 5 Vip + 5 Principal
     maxTitulares: 5,
   },
 } as const
