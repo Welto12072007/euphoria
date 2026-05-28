@@ -39,11 +39,11 @@ export const MODOS = {
   },
   ilusion: {
     label: 'Ilusion Temple',
-    canais: ['ilusion', 'vipilusion'] as const,
+    canais: ['ilusion'] as const,
     horarios: HORARIOS_ILUSION,
     titulo: '✨ Ilusion Temple Check-in',
     siglaProximo: 'Ilusion',
-    maxJogadores: 5,   // apenas 1 grupo
+    maxJogadores: 5,
     maxTitulares: 5,
   },
 } as const
@@ -66,7 +66,6 @@ export const LABELS: Record<CanalKey, string> = {
   bc6: 'BC6',
   bc7: 'BC7',
   ilusion: 'Ilusion',
-  vipilusion: 'Vip Ilusion',
 }
 
 export const VERSAO = '2.1.0'

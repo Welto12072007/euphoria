@@ -57,16 +57,18 @@ export function CheckinForm({ agora, modo }: Props) {
         onChange={(e) => setNome(e.target.value)}
         placeholder="Nome do personagem"
       />
-      <select
-        value={canal}
-        onChange={(e) => setCanal(e.target.value as CanalKey)}
-      >
-        {canais.map((c) => (
-          <option key={c} value={c}>
-            {LABELS[c]}
-          </option>
-        ))}
-      </select>
+      {canais.length > 1 && (
+        <select
+          value={canal}
+          onChange={(e) => setCanal(e.target.value as CanalKey)}
+        >
+          {canais.map((c) => (
+            <option key={c} value={c}>
+              {LABELS[c]}
+            </option>
+          ))}
+        </select>
+      )}
       <button type="submit" disabled={enviando}>
         {enviando ? 'Enviando...' : 'Fazer Check-in'}
       </button>

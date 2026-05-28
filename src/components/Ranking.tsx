@@ -36,7 +36,6 @@ export function Ranking({ checkins, modo }: Props) {
         const classes = ['bc-card']
         if (full) classes.push('bc-full')
         if (canal === 'ilusion') classes.push('ilusion')
-        if (canal === 'vipilusion') classes.push('vipilusion')
 
         return (
           <div key={canal} className={classes.join(' ')}>
@@ -48,7 +47,9 @@ export function Ranking({ checkins, modo }: Props) {
 
             {titulares.length > 0 && (
               <>
-                <div className="titulo-titulares">⚔️ PT 1 -&gt; Vip</div>
+                {maxJogadores > maxTitulares && (
+                  <div className="titulo-titulares">⚔️ PT 1 -&gt; Vip</div>
+                )}
                 {titulares.map((p, i) => (
                   <div key={`t-${i}`}>
                     {NUMS[i]} {p}
